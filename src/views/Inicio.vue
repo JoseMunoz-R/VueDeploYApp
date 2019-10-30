@@ -1,19 +1,19 @@
 <template>
     <div class="mt-5">
        <h1>Perfil de Usuario</h1>
-       <p>Bienvenido {{usuario.email}}</p>
+       <p>Bienvenido {{usuario.email}} - {{usuario.uid}}</p>
        
        <b-container>
       <b-row>
         <b-col cols="12" md="6" lg="4">
           <div>
            
-            <b-form @submit.prevent="actualizarInfoUser(perfil)">
+            <b-form @submit.prevent="actualizarInfoUser(userPerfil)">
               <b-form-group>
                 <label for="input-nombre">Nombre Completo</label>
                 <b-form-input
                   id="input-nombres"
-                  v-model="perfil.nombre"
+                  v-model="userPerfil.nombre"
                   type="text"
                   required
                   placeholder="Ingrese sus nombres"
@@ -24,7 +24,7 @@
                 <label for="input-apellido">Apellido Completo</label>
                 <b-form-input
                   id="input-apellido"
-                  v-model="perfil.apellidos"
+                  v-model="userPerfil.apellidos"
                   type="text"
                   required
                   placeholder="Ingrese sus apellidos"
@@ -35,7 +35,7 @@
                 <label for="input-dni">Numero de Identidad</label>
                 <b-form-input
                   id="input-dni"
-                  v-model="perfil.cedula"
+                  v-model="userPerfil.cedula"
                   type="text"
                   required
                   placeholder="Ingrese su numero de identificación"
@@ -46,7 +46,7 @@
                 <label for="input-cel">Numero de contacto</label>
                 <b-form-input
                   id="input-cel"
-                  v-model="perfil.nroContacto"
+                  v-model="userPerfil.nroContacto"
                   type="text"
                   required
                   placeholder="Ingrese su numero celular"
@@ -57,7 +57,7 @@
                 <label for="input-tec">Digite tecnologías que actual/ sepa</label>
                 <b-form-input
                   id="input-tec"
-                  v-model="perfil.lenguajes"
+                  v-model="userPerfil.lenguajes"
                   type="text"
                   required
                   placeholder="Tecnologías: Java, Dart..."
@@ -68,7 +68,7 @@
                 <label for="input-ing">Digite su nivel de inglés</label>
                 <b-form-input
                   id="input-ing"
-                  v-model="perfil.ingles"
+                  v-model="userPerfil.ingles"
                   type="text"
                   required
                   placeholder="C2 - C1 - B2 - B1 - A2 - A1"
@@ -79,7 +79,7 @@
                 <label for="input-exp">Describa su experiencia laboral</label>
                 <b-form-textarea
                   id="input-exp"
-                  v-model="perfil.experiencia"
+                  v-model="userPerfil.experiencia"
                   type="text"
                   required
                   placeholder="Ingrese su numero de identificación"
@@ -100,6 +100,7 @@
       </b-row>
     </b-container>
        {{userPerfil}}
+       {{userPerfil.id}}
     </div>
 </template>
 

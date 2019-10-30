@@ -95,7 +95,7 @@ export default new Vuex.Store({
     },
     actualizarInfoUser({ commit }, userPerfil) {
       const usuario = firebase.auth().currentUser;
-      db.collection(usuario.email).doc(usuario.uid).update({
+      db.collection(usuario.email).doc(userPerfil.id).update({
         nombre: userPerfil.nombre,
         apellidos: userPerfil.apellidos,
         cedula: userPerfil.cedula,
