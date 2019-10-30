@@ -16,6 +16,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
 require("firebase/auth");
+require("firebase/firestore");
 
 var firebaseConfig = {
   apiKey: "AIzaSyCgog-MxXIdqvuBtvrPpU-mlhw2oS2tWYE",
@@ -28,7 +29,11 @@ var firebaseConfig = {
   measurementId: "G-R57D31RRGX"
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+//firebase.initializeApp(firebaseConfig);
+
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+//firebaseApp.firestore().settings({ timestampsInSnapshots: true });
+export default firebaseApp.firestore();
 
 
 firebase.auth().onAuthStateChanged((user) => {
