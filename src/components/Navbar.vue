@@ -11,8 +11,15 @@
             <b-nav-item :to="{name: 'inicio'}" v-if="existeUsuario" exact >Inicio</b-nav-item>
             
             <b-nav-item @click="logout" v-if="existeUsuario" right>Cerrar Sesión</b-nav-item>
-            
 
+                     
+
+          </b-navbar-nav class="ml-auto">
+          <b-navbar-nav>
+             <b-nav-item-dropdown text="Empresa" right>
+        <b-dropdown-item href="#">Registro</b-dropdown-item>
+       
+      </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
       </b-container>
