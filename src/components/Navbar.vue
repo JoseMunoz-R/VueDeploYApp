@@ -9,7 +9,8 @@
             <b-nav-item :to="{name: 'register'}" v-if="!existeUsuario">Registro</b-nav-item>
             <b-nav-item :to="{name: 'login'}" v-if="!existeUsuario">Login</b-nav-item>
             <b-nav-item :to="{name: 'inicio'}" v-if="existeUsuario" exact >Inicio</b-nav-item>
-            
+            <b-nav-item :to="{name: 'empresa'}">Empresa</b-nav-item>
+                                                           
             <b-nav-item @click="logout" v-if="existeUsuario" right>Cerrar Sesión</b-nav-item>
             
 

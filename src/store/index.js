@@ -10,13 +10,18 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     usuario: '',
+    empresa: '',
     error: '',
     perfilusuario: { nombre: '', apellidos: '', cedula: '', nrocontacto: '', emailprofile: '', experiencia: '', lenguajes: '', ingles: '' },
+    perfilEmpresa: { nombre: '', nit: '', ciudad: '', direccion: '', sector: '', numero_contacto: ''},
     userPerfil: []
   },
   mutations: {
     setUsuario(state, payload) {
       state.usuario = payload;
+    },
+    setEmpresa(state, payload) {
+      state.empresa = payload;/////////////////////////////////////
     },
     setError(state, payload) {
       state.error = payload
@@ -106,12 +111,72 @@ export default new Vuex.Store({
       }).then(() => {
 
       })
+    },
+    crearEmpresa({ commit }, payload) {
+      firebase.auth().createUserWithEmailAndPassword(payload.email, payload.pass)
+     
+        .then(res => {
+          console.log(res.user.email);
+          console.log(res.user.uid);
+          
+          
+
+          commit("setEmpresa", {email: res.user.email, uid: res.user.uid});
+
+          db.collection(res.user.email).add({
+            nombre: "ejemplo" 
+          })
+          .then(() => {
+            router.push({ name: "InicioEmpresa" });
+          });
+        })
+        .catch(err => {
+          console.log(err.message), commit("setError", err.message);
+        });
+    },
+    ingresoEmpresa({ commit }, payload) {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(payload.email, payload.pass)
+        .then(res => {
+          console.log(res);
+          commit("setEmpresa", { email: res.user.email, uid: res.user.uid });
+          router.push({ name: "InicioEmpresa" });
+        })
+        .catch(err => {
+          console.log(err);
+          commit("setError", err.message);
+        });
+    },
+    detectarEmpresa({ commit }, payload) {
+      if (payload != null) {
+        commit("setEmpresa", { email: payload.email, uid: payload.uid });
+      } else {
+        commit("setEmpresa", null);
+      }
+    },
+
+    cerrarSesion({ commit }) {
+      firebase.auth().signOut();
+      commit("setEmpresa", null);
+      router.push({ name: "ingresoEmpresa" });
     }
   },
   modules: {},
   getters: {
     existeUsuario(state) {
       if (state.usuario === null || state.usuario === '' || state.usuario === undefined) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    existeEmpresa(state) {
+      if (
+        state.empresa === null ||
+        state.empresa === "" ||
+        state.empresa === undefined
+      ) {
         return false;
       } else {
         return true;
