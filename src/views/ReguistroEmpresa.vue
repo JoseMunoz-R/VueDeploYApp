@@ -1,15 +1,48 @@
 <template>
   <div>
-    <form @submit.prevent="crearEmpresa({email:email, pass:pass1})">
+    <b-form @submit.prevent="crearEmpresa({email:email, pass:pass1})">
       <h1>Registro de empresas</h1>
 
-      <input type="email" v-model="email" />
-      <input type="password" v-model="pass1" />
-      <input type="password" v-model="pass2" />
+
+
+    
+       <b-form-group>
+                  <label for="input-pass">Correo Electronico</label>
+                  <b-form-input
+                    id="input-email"
+                    v-model="email"
+                    type="email"
+                    required
+                    placeholder="Ingrese su email"
+                    label="EMAIL"
+                  ></b-form-input>
+                </b-form-group>
+              
+              <b-form-group>
+                <label for="input-pass">Contraseña</label>
+                <b-form-input
+                  id="input-pass"
+                  v-model="pass1" 
+                  type="password"
+                  required
+                  placeholder="Ingrese su contraseña"
+                ></b-form-input>
+              </b-form-group>
+              <b-form-group>
+                <label for="input-pass2">Confirmación de Contraseña</label>
+                <b-form-input
+                  id="input-pass2"
+                  v-model="pass2"
+                  type="password"
+                  required
+                  placeholder="Confirme su contraseña"
+                ></b-form-input>
+              </b-form-group>
+              <b-button type="submit" variant="info" :disabled="!desactivar">Crear Usuario</b-button>
      
       <br />
-      <button type="submit" :disabled="!desactivar">Crear Usuario</button>
-    </form>
+     
+    </b-form>
     <p>{{error}}</p>
   </div>
 </template>
