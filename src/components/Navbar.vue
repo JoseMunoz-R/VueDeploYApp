@@ -9,7 +9,7 @@
             <b-nav-item :to="{name: 'register'}" v-if="!existeUsuario">Registro</b-nav-item>
             <b-nav-item :to="{name: 'login'}" v-if="!existeUsuario">Login</b-nav-item>
             <b-nav-item :to="{name: 'inicio'}" v-if="existeUsuario" exact >Inicio</b-nav-item>
-            <b-nav-item :to="{name: 'empresa'}">Empresa</b-nav-item>
+            
                                                            
             <b-nav-item @click="logout" v-if="existeUsuario" right>Cerrar Sesión</b-nav-item>
 
@@ -18,7 +18,8 @@
           </b-navbar-nav>
           <b-navbar-nav>
              <b-nav-item-dropdown text="Empresa" right>
-        <b-dropdown-item href="#">Registro</b-dropdown-item>
+        <b-dropdown-item :to="{name: 'ReguistroEmpresa'}">Registro</b-dropdown-item>
+        <b-dropdown-item :to="{name: 'ingresoEmpresa'}">Login</b-dropdown-item>
        
       </b-nav-item-dropdown>
           </b-navbar-nav>
