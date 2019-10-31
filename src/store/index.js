@@ -53,7 +53,7 @@ export default new Vuex.Store({
               ingles: ""
             })
             .then(() => {
-              //router.push({ name: 'inicio' })
+              router.push({ name: 'inicio' })
             });
         })
         .catch(err => {
