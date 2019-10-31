@@ -12,8 +12,15 @@
             <b-nav-item :to="{name: 'empresa'}">Empresa</b-nav-item>
                                                            
             <b-nav-item @click="logout" v-if="existeUsuario" right>Cerrar Sesión</b-nav-item>
-            
 
+                     
+
+          </b-navbar-nav>
+          <b-navbar-nav>
+             <b-nav-item-dropdown text="Empresa" right>
+        <b-dropdown-item href="#">Registro</b-dropdown-item>
+       
+      </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
       </b-container>
