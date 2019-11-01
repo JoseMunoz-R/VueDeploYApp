@@ -41,6 +41,7 @@ const routes = [
     name: "editionProfile",
     component: () => import("@/views/EditionProfile.vue")
   },
+
   {
     path: '/empresa/ingresoEmpresa',
     name: 'ingresoEmpresa',
