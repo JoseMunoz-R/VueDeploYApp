@@ -1,6 +1,6 @@
 <template>
   <div class="mt-5">
-    <h5>Bienvenido {{usuario.email}}</h5>
+  
 
     <h1>Edita tu perfil de usuario</h1>
 
@@ -103,7 +103,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 export default {
-  name: "Inicio",
+  name: "EditionProfile",
   data() {
     return {
       perfil: []
