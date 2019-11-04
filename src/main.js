@@ -5,8 +5,10 @@ import store from "./store";
 //import { firestorePlugin } from "vuefire";
 
 import BootstrapVue from "bootstrap-vue";
-
 Vue.use(BootstrapVue);
+
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
 
 Vue.config.productionTip = false;
 //Vue.use(firestorePlugin);

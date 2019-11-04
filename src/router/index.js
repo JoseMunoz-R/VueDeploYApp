@@ -27,8 +27,8 @@ const routes = [
     component: () => import("@/views/PerfilUsuario.vue")
   },
   {
-    path: "/register/empresa",
-    name: "RegisterEmpresa",
+    path: "/registerEmpresa",
+    name: "registerEmpresa",
     component: () => import("@/views/RegisterEmpresa.vue")
   },
   {
@@ -37,36 +37,24 @@ const routes = [
     component: () => import("@/views/Empresa.vue")
   },
   {
-    path: "/perfilUsuario",
-    name: "perfilUsuario",
-    component: () => import("@/views/PerfilUsuario.vue")
+    path: "/perfilEmpresa",
+    name: "perfilEmpresa",
+    component: () => import("@/views/PerfilEmpresa.vue")
   },
+  
   {
     path: '/empresa/ingresoEmpresa',
     name: 'ingresoEmpresa',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    
     component: () => import(/* webpackChunkName: "about" */ '../views/IngresoEmpresa.vue')
   },
   {
     path: '/empresa/ReguistroEmpresa',
     name: 'ReguistroEmpresa',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/ReguistroEmpresa.vue')
   },
-  ,
-  {
-    path: '/empresa/inicioEmpresa',
-    name: 'InicioEmpresa',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/InicioEmpresa.vue'),
-    meta: { requiresAuth: true }
-  }
+  
+ 
   
 ];
 

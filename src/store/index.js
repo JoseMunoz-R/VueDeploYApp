@@ -14,7 +14,7 @@ export default new Vuex.Store({
     empresa: '',
     error: '',
     perfilusuario: { nombre: '', apellidos: '', cedula: '', nrocontacto: '', emailprofile: '', experiencia: '', lenguajes: '', ingles: '' },
-    perfilEmpresa: { nombre: '', nit: '', ciudad: '', direccion: '', sector: '', numero_contacto: ''},
+    perfilEmpresa: { nombre: '', nit: '', ciudad: '', direccion: '', sector: '', numero_contacto: '' },
     userPerfil: []
   },
   mutations: {
@@ -22,17 +22,17 @@ export default new Vuex.Store({
       state.usuario = payload;
     },
     setEmpresa(state, payload) {
-      state.empresa = payload;/////////////////////////////////////
+      state.empresa = payload;
     },
     setError(state, payload) {
       state.error = payload;
     },
     setProfile(state, profile) {
-     state.perfilusuario = profile;
- 
+      state.perfilusuario = profile;
+
     },
-    setProfileEmpresa(state,profileEmpresa){
-      state.perfilEmpresa=profileEmpresa;
+    setProfileEmpresa(state, profileEmpresa) {
+      state.perfilEmpresa = profileEmpresa;
     }
   },
   actions: {
@@ -73,7 +73,7 @@ export default new Vuex.Store({
         .then(res => {
           console.log(res);
           commit("setUsuario", { email: res.user.email, uid: res.user.uid });
-          router.push({ name: "inicio" });
+          router.push({ name: "perfilUsuario" });
         })
         .catch(err => {
           console.log(err);
@@ -99,8 +99,8 @@ export default new Vuex.Store({
         .get()
         .then(snapshot => {
           snapshot.forEach(doc => {
-            //console.log(doc.id);
-            //console.log(doc.data());
+            console.log(doc.id);
+            console.log(doc.data());
             let profile = doc.data();
             profile.id = doc.id;
             perfilGuardarenSet.push(profile);
@@ -108,22 +108,24 @@ export default new Vuex.Store({
         });
       commit("setProfile", perfilGuardarenSet);
     },
-    getProfileEmpresa({ commit }){
-      let perfilGuardarenSet=[];
-      const empresa = firebase.auth().currentUser;
-      db.collection(empresa.email).get().then(snapshot=>{
-        snapshot.forEach(doc=>{
-          console.log(doc.id);
-         console.log(doc.data());
-          let profileEmpresa=doc.data();
-          profileEmpresa.id=doc.id;
-          perfilGuardarenSet.push(profileEmpresa);
+
+    getProfileEmpresa({ commit }) {
+      const perfilempresaGuardarenSet = [];
+      const usuario = firebase.auth().currentUser;
+      db.collection(usuario.email).get().then(snapshot => {
+        snapshot.forEach(doc => {
+          console.log(usuario.email);
+          console.log(doc.data());
+          let profileEmpresa = doc.data();
+          profileEmpresa.id = doc.id;
+          perfilempresaGuardarenSet.push(profileEmpresa);
         });
       });
-      commit("setProfileEmpresa", perfilGuardarenSet);
+      commit("setProfileEmpresa", perfilempresaGuardarenSet);
     },
-    async actualizarInfoUser({ commit }, perfilusuario) {
-      const usuario = await firebase.auth().currentUser;
+
+    actualizarInfoUser({ commit }, perfilusuario) {
+      const usuario = firebase.auth().currentUser;
       let { email } = usuario;
       //console.log(usuario.email)
       //console.log(perfilusuario)
@@ -136,17 +138,17 @@ export default new Vuex.Store({
         experiencia: perfilusuario.experiencia,
         lenguajes: perfilusuario.lenguajes,
         ingles: perfilusuario.ingles
-      }).then(()=>{
-        router.push({name: 'perfilUsuario'})
+      }).then(() => {
+        router.push({ name: 'perfilUsuario' })
       })
     },
-    actualizarInfoEmpresa({commit}, perfilEmpresa){
+    actualizarInfoEmpresa({ commit }, perfilEmpresa) {
       const usuario = firebase.auth().currentUser;
       let { email } = usuario;
       console.log(usuario)
       console.log(perfilEmpresa)
 
-      db.collection(emial).doc(perfilEmpresa.id).update({
+      db.collection(email).doc(perfilEmpresa[0].id).update({
         nombre: perfilEmpresa.nombre,
         nit: perfilEmpresa.nit,
         ciudad: perfilEmpresa.ciudad,
@@ -154,31 +156,33 @@ export default new Vuex.Store({
         sector: perfilEmpresa.sector,
         numero_contacto: perfilEmpresa.numero_contacto
 
+      }).then(()=>{
+        router.push({ name: 'perfilEmpresa' })
       })
     },
     crearEmpresa({ commit }, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.pass)
-     
-        .then(res => {
-          console.log(res.user.email);
-          console.log(res.user.uid);
-          
-          
 
-          commit("setEmpresa", {email: res.user.email, uid: res.user.uid});
+        .then(res => {
+          //console.log(res.user.email);
+          console.log(res.user.uid);
+
+
+
+          commit("setEmpresa", { email: res.user.email, uid: res.user.uid });
 
           db.collection(res.user.email).add({
             nombre: "ejemplo",
             email: res.user.email,
-            nit: '', 
-            ciudad: '', 
-            direccion: '', 
-            sector: '', 
+            nit: '',
+            ciudad: '',
+            direccion: '',
+            sector: '',
             numero_contacto: ''
           })
-          .then(() => {
-            router.push({ name: "RegisterEmpresa" });
-          });
+            .then(() => {
+              router.push({ name: "registerEmpresa" });
+            });
         })
         .catch(err => {
           console.log(err.message), commit("setError", err.message);
@@ -191,7 +195,7 @@ export default new Vuex.Store({
         .then(res => {
           console.log(res);
           commit("setEmpresa", { email: res.user.email, uid: res.user.uid });
-          router.push({ name: "RegisterEmpresa" });
+          router.push({ name: "perfilEmpresa" });
         })
         .catch(err => {
           console.log(err);

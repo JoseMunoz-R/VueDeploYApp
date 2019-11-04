@@ -17,7 +17,7 @@
 
           </b-navbar-nav>
           <b-navbar-nav>
-             <b-nav-item-dropdown text="Empresa" right>
+             <b-nav-item-dropdown v-if="!existeUsuario" text="Empresa" right>
         <b-dropdown-item :to="{name: 'ReguistroEmpresa'}">Registro</b-dropdown-item>
         <b-dropdown-item :to="{name: 'ingresoEmpresa'}">Login</b-dropdown-item>
        
@@ -44,7 +44,7 @@ export default {
     ...mapActions(['logout'])
   },
   computed: {
-    ...mapGetters(['existeUsuario'])
+    ...mapGetters(['existeUsuario', 'existeEmpresa'])
   },
 };
 </script>
