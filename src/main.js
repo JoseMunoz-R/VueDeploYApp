@@ -19,6 +19,7 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 
 require("firebase/auth");
 require("firebase/firestore");
+require("firebase/storage");
 
 var firebaseConfig = {
   apiKey: "AIzaSyDs72PKkd8CTQDmTS23X5EK33LJq9TP4Nw",

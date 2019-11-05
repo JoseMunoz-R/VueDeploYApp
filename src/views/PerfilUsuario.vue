@@ -15,9 +15,11 @@
         Experiencia: {{perfilusuario[0].experiencia}} <br>
         Nivel de Inglés: {{perfilusuario[0].ingles}} <br>
 
-          <router-link :to="{name:'editionProfile'}">
-              <b-button>Edita tu perfil</b-button>
-            </router-link>
+          <div>
+          <b-button :to="{name:'editionProfile'}">Edita tu perfil</b-button>
+          </div>
+              
+            <UpFile></UpFile>
         </b-card-text>
       </b-card>
     </b-card-group>
@@ -28,6 +30,7 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import UpFile from '@/components/UpFile'
 export default {
     name: 'perfilUsuario',
     data() {
@@ -44,5 +47,8 @@ export default {
     created() {
         this.getProfileUsuario()
     },
+    components: {
+      UpFile,
+    }
 }
 </script>
