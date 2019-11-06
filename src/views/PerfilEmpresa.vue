@@ -11,17 +11,19 @@
         Dirección: {{perfilEmpresa[0].direccion}} <br>
         Ciudad: {{perfilEmpresa[0].ciudad}} <br>
         Sector: {{perfilEmpresa[0].sector}} <br>
-        Nro. de Contatcto: {{perfilEmpresa[0].numero_contatcto}} <br>
+        Nro. de Contatcto: {{perfilEmpresa[0].numero_contacto}} <br>
 
         </b-card-text>
       </b-card>
     </b-card-group>
+    <Card></Card>
   </div>
     </div>
 </template>
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import Card from '@/components/Card'
 export default {
     
     name: 'perfilEmpresa',
@@ -30,14 +32,18 @@ export default {
 
         }
     },
+    components: {
+        Card,
+    },
     methods: {
-        ...mapActions(['getProfileEmpresa'])
+        ...mapActions(['getProfileEmpresa', 'getVacantes'])
     },
     computed: {
         ...mapState(['perfilEmpresa'])
     },
     created() {
-        this.getProfileEmpresa()
+        this.getProfileEmpresa(),
+        this.getVacantes()
     },
 }
 </script>
