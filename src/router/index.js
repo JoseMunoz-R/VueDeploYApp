@@ -58,8 +58,13 @@ const routes = [
     name: 'editionProfile',
     component: () => import(/* webpackChunkName: "about" */ '../views/EditionProfile.vue')
   },
+  {
+    path: '/empresa/EditarEmpresa',
+    name: 'EditarEmpresa',
+    component: () => import(/* webpackChunkName: "about" */ '../views/EditarEmpresa.vue')
+  }
   
- 
+  
   
 ];
 
