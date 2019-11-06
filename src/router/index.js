@@ -58,8 +58,25 @@ const routes = [
     name: 'editionProfile',
     component: () => import(/* webpackChunkName: "about" */ '../views/EditionProfile.vue')
   },
+  {
+    path: '/empresa/EditarEmpresa',
+    name: 'EditarEmpresa',
+    component: () => import(/* webpackChunkName: "about" */ '../views/EditarEmpresa.vue')
+  },
+  {
+    path: '/empresa/ofertas/editar/:id',
+    name: 'editar',
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/OfertasEmpresa/Editar.vue')
+  },
+  {
+    path: '/empresa/ofertas/agregar',
+    name: 'agregar',
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/OfertasEmpresa/Agregar.vue')
+  }
   
- 
+  
   
 ];
 
