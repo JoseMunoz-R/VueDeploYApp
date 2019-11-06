@@ -42,7 +42,7 @@ export default {
         ...mapActions(['getProfileUsuario'])
     },
     computed: {
-        ...mapState(['perfilusuario'])
+        ...mapState(['perfilusuario', 'usuario'])
     },
     created() {
         this.getProfileUsuario()

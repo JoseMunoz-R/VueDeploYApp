@@ -65,11 +65,26 @@
       </template>
       
       <script>
+
+import {mapState, mapActions} from 'vuex'
       export default {
-      
+        name: 'card',
+        data() {
+          return {
+            candidatos: []
+          }
+        },
+        computed: {
+          ...mapState(['usuario'])
+        },
+        methods: {
+          ...mapActions(['getCandidatos']),
+          
+        },
+        created() {
+          this.getCandidatos()
+        },
       }
       </script>
       
-      <style>
-      
-      </style>
+    

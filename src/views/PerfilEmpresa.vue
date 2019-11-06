@@ -2,20 +2,18 @@
 
 
     <div class="mt-5">
-      {{usuario}}
-      {{perfilEmpresa}}
-        <h1>Empresa: {{perfilEmpresa.nombre}}</h1>
+        <h1>Empresa: {{perfilEmpresa[0].nombre}}</h1>
        
         <div class="mt-3">
     <b-card-group deck class="mb-3">
       <b-card border-variant="danger" header="Perfil Empresa" class="text-left">
         <b-card-text>
-        Nombre: {{perfilEmpresa.nombre}} <br>
-        Nit: {{perfilEmpresa.nit}} <br>
-        Dirección: {{perfilEmpresa.direccion}} <br>
-        Ciudad: {{perfilEmpresa.ciudad}} <br>
-        Sector: {{perfilEmpresa.sector}} <br>
-        Nro. de Contatcto: {{perfilEmpresa.numero_contatcto}} <br>
+        Nombre: {{perfilEmpresa[0].nombre}} <br>
+        Nit: {{perfilEmpresa[0].nit}} <br>
+        Dirección: {{perfilEmpresa[0].direccion}} <br>
+        Ciudad: {{perfilEmpresa[0].ciudad}} <br>
+        Sector: {{perfilEmpresa[0].sector}} <br>
+        Nro. de Contatcto: {{perfilEmpresa[0].numero_contacto}} <br>
 
         <div>
           <b-button :to="{name:'EditarEmpresa'}">Edita tu perfil</b-button>
@@ -24,6 +22,7 @@
 
       </b-card>
     </b-card-group>
+    <Card></Card>
   </div>
   <div>
     <h1>Lista de tareas</h1>
@@ -49,6 +48,7 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import Card from '@/components/Card'
 export default {
     
     name: 'perfilEmpresa',
@@ -57,15 +57,17 @@ export default {
 
         }
     },
+    components: {
+        Card,
+    },
     methods: {
-        ...mapActions(['getProfileEmpresa','getTareas', 'eliminarTarea', 'getVacantes'])
+        ...mapActions(['getProfileEmpresa', 'getVacantes'])
     },
     computed: {
         ...mapState(['perfilEmpresa', 'tareas', 'usuario'])
     },
     created() {
         this.getProfileEmpresa(),
-        this.getTareas();
         this.getVacantes()
     },
 }
