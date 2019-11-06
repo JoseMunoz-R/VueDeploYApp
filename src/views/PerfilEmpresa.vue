@@ -1,6 +1,6 @@
 <template>
     <div class="mt-5">
-        <h1>Perfil: {{perfilEmpresa[0].nombre}}</h1>
+        <h1>Empresa: {{perfilEmpresa[0].nombre}}</h1>
        
         <div class="mt-3">
     <b-card-group deck class="mb-3">
@@ -13,7 +13,11 @@
         Sector: {{perfilEmpresa[0].sector}} <br>
         Nro. de Contatcto: {{perfilEmpresa[0].numero_contacto}} <br>
 
+        <div>
+          <b-button :to="{name:'EditarEmpresa'}">Edita tu perfil</b-button>
+          </div>
         </b-card-text>
+
       </b-card>
     </b-card-group>
     <Card></Card>
