@@ -15,33 +15,27 @@
         Sector: {{perfilEmpresa[0].sector}} <br>
         Nro. de Contatcto: {{perfilEmpresa[0].numero_contacto}} <br>
 
-        <div>
-          <b-button :to="{name:'EditarEmpresa'}">Edita tu perfil</b-button>
-          </div>
+        
+          <router-link class="btn btn-info btn-sm mr-2" 
+          :to="{name: 'EditarEmpresa'}">
+            Edita tu perfil
+          </router-link>
         </b-card-text>
 
       </b-card>
     </b-card-group>
-    <Card></Card>
+    
   </div>
-  <div>
-    <h1>Lista de tareas</h1>
-    <router-link :to="{name: 'agregar'}">
-      <button class="btn btn-success btn-block">Agregar</button>
-    </router-link>
-    <ul class="list-group mt-5">
-      <li class="list-group-item" v-for="item of tareas" :key="item.id">
-        {{item.id}} - {{item.nombre}}
-        <div class="float-right">
-          <router-link
-            class="btn btn-warning btn-sm mr-2"
-            :to="{name: 'editar', params:{ id: item.id}}"
-          >Editar</router-link>
-          <button @click="eliminarTarea(item.id)" class="btn btn-danger btn-sm">Eliminar</button>
-        </div>
-      </li>
-    </ul>
-  </div>
+
+    <div>
+  <b-tabs content-class="mt-3">
+    <b-tab title="Candidatos" active><h4>Candidatos</h4><Card></Card></b-tab>
+    <b-tab title="Vacantes"> <CrearVacante></CrearVacante></b-tab>
+    <b-tab title="Disabled" disabled><p>Postulantes</p></b-tab>
+  </b-tabs>
+</div>
+
+  
     </div>
     
 </template>
@@ -49,6 +43,7 @@
 <script>
 import {mapState, mapActions} from 'vuex'
 import Card from '@/components/Card'
+import CrearVacante from '@/components/CrearVacante'
 export default {
     
     name: 'perfilEmpresa',
@@ -59,6 +54,7 @@ export default {
     },
     components: {
         Card,
+        CrearVacante,
     },
     methods: {
         ...mapActions(['getProfileEmpresa', 'getVacantes'])

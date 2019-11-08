@@ -1,12 +1,12 @@
 <template>
     <div>
-    
-    
-    <b-container class="mt-5" >
-    <h4>Editar Vacante</h4>
-  <b-row>
-    <b-col>
-     <b-form @submit.prevent="editarVacante(vacante)">
+        <div>
+
+        <b-container class="bv-example-row">
+            <b-row>
+            <b-col>
+            <h4>Crear vacantes</h4>
+                 <b-form @submit.prevent="agregarVacante(vacante)">
       <b-form-group
         id="input-group-1"
         label="Cargo"
@@ -30,18 +30,18 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Salario" label-for="input-2">
+      <b-form-group id="input-group-2" label="Salario" label-for="input-3">
         <b-form-input
-          id="input-2"
+          id="input-3"
           v-model="vacante.salario"
           required
           placeholder="$"
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Horario" label-for="input-2">
+      <b-form-group id="input-group-2" label="Horario" label-for="input-4">
         <b-form-input
-          id="input-2"
+          id="input-4"
           v-model="vacante.horario"
           required
           placeholder="Horario: Lunes a viernes de 8 am. - 5 pm."
@@ -58,35 +58,48 @@
       </b-form-group>
 
 
-      <b-button type="submit" variant="info">Actualizar</b-button>
+      <b-button type="submit" variant="info">Agregar</b-button>
       
     </b-form>
-    </b-col>
-    <b-col></b-col>
-  </b-row>
-</b-container>
-    
-    
+            </b-col>
+            <b-col>
+                <ListaVacante></ListaVacante>
+            </b-col>
+            
+            </b-row>
+        </b-container>
+       
+
+   
+  </div>
     </div>
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
+import { mapState, mapActions } from 'vuex'
+import ListaVacante from '@/components/ListaVacante'
 export default {
-  name: 'Editar',
-  data(){
-    return{
-      id: this.$route.params.id
-    }
-  },
-  methods:{
-    ...mapActions(['editarVacante', 'getVacante'])// recibe para editar
-  },
-  created(){
-    this.getVacante(this.id)
-  },
-  computed:{
-    ...mapState(['vacante'])
-  }
+    name: 'crearVacante',
+    data() {
+        return {
+            vacante: { cargo: '', educacion: '', salario: '', horario: '', descripcion: ''}
+           
+        }
+    },
+    computed: {
+        ...mapState(['vacantes'])
+    },
+    methods: {
+        ...mapActions(['agregarVacante','eliminarVacante', 'getVacantes'])
+    },
+    components:{
+        ListaVacante
+    },
+    created() {
+        this.getVacantes()
+    },
+    mounted() {
+        
+    },
 }
 </script>

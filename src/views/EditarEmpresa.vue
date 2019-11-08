@@ -1,6 +1,6 @@
 <template>
   <div class="mt-5">
-  
+  {{empresa}}
     <b-container>
       <b-row>
         <b-col cols="12" md="6" lg="4">
@@ -78,9 +78,11 @@
               </b-form-group>
               
              
-             <b-button type="submit" variant="info">
-                <a v-link="{nombre:'perfilEmpresa'}">Actualizar Datos</a>
+              <b-button type="submit" variant="info">
+                Actualizar Datos
               </b-button>
+            
+              
             </b-form>
             
 

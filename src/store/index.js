@@ -13,11 +13,13 @@ export default new Vuex.Store({
     usuario: '',
     empresa: '',
     error: '',
-    perfilusuario: { nombre: '', apellidos: '', cedula: '', nrocontacto: '', emailprofile: '', experiencia: '', lenguajes: '', ingles: '', rol: "", foto: ""},
-    perfilEmpresa: { nombre: '', nit: '', ciudad: '', direccion: '', sector: '', numero_contacto: '', rol: '' },
+    perfilusuario: { nombre: '', apellidos: '', cedula: '', nrocontacto: '', emailprofile: '', experiencia: '', lenguajes: '', ingles: '', rol: "", foto: "", urlfile: ""},
+    perfilEmpresa: { nombre: '', nit: '', ciudad: '', direccion: '', sector: '', numero_contacto: '', rol: '', vacantes: [] },
     userPerfil: [],
-    candidato: [],
-    
+    candidatos: [],
+    urlHv:'',
+    vacante: { cargo: '', educacion: '', salario: '', horario: '', descripcion: ''},
+    vacantes: []
   },
   mutations: {
     setUsuario(state, payload) {
@@ -39,14 +41,23 @@ export default new Vuex.Store({
     setTareas(state, tareas) {
       state.tareas = tareas 
     },
-    setTarea(state, tarea){
-      state.tarea = tarea
+    setVacante(state, vacante){
+      state.vacante = vacante
     },
-    eliminarTarea(state, id){
-      state.tareas = state.tareas.filter( doc => {
+    eliminarVacante(state, id){
+      state.vacantes = state.vacantes.filter( doc => {
         return doc.id != id 
       })
 
+    },
+    setCandidatos(state, candidatosSet){
+      state.candidatos= candidatosSet;
+    },
+    setFileHv(state, fileHv){
+      state.urlHv=fileHv
+    },
+    setVacantes(state, currentVacant){
+      state.vacantes= currentVacant;
     }
   },
   actions: {
@@ -72,7 +83,8 @@ export default new Vuex.Store({
               lenguajes: "",
               ingles: "",
               rol: "candidato",
-              foto: ""
+              foto: "",
+              urlfile: ""
             })
             .then(() => {
               router.push({ name: 'inicio' })
@@ -197,11 +209,15 @@ export default new Vuex.Store({
             direccion: '',
             sector: '',
             numero_contacto: '',
-            rol: 'empresa'
+            rol: 'empresa',
+            vacantes: []
           })
             .then(() => {
               router.push({ name: "registerEmpresa" });
+             
             });
+
+            
         })
         .catch(err => {
           console.log(err.message), commit("setError", err.message);
@@ -236,34 +252,119 @@ export default new Vuex.Store({
     },
 
     getCandidatos({commit}){
-      const usuario = firebase.auth().currentUser;
-      
-      console.log(usuario.email)
+      const candidatoEnSet = [];
+      //console.log(usuario.email)
+
       try{
-        const CandidatoEnSet = [];
-        db.collection("semiact-60ded").get().then(snapshot=>{
+       
+        db.collection("users").get().then(snapshot=>{
           snapshot.forEach(doc=>{
-            console.log(doc.data());
+            //console.log(doc.data());
+            let profile=doc.data();
+            profile.id=doc.id;
+            candidatoEnSet.push(profile);
+
           })
         })
       }catch(err){
         console.log("Error getting documents: ", err);
       }
+      //console.log(candidatoEnSet);
+      commit("setCandidatos", candidatoEnSet);
     },
 
     getVacantes({commit}){
+      const vacantesEnSet= [];
       const usuario =firebase.auth().currentUser;
-      console.log(usuario.email)
-      const docRef= db.collection("company").doc(usuario.email).collection("vacante");
+      //console.log(usuario.email)
+      const docRef= db.collection("company").doc(usuario.email).collection("vacantes");
   
       docRef.get().then(snapshot=>{
         snapshot.forEach(doc=>{
           console.log(doc.data())
+          let profile=doc.data();
+          profile.id=doc.id;
+          vacantesEnSet.push(profile);
         })
       }).catch(err=>{
         console.log(err)
       })
+      commit("setVacantes", vacantesEnSet);
     },
+
+    getVacante({commit}, id){
+      const usuario =firebase.auth().currentUser;
+      db.collection('company').doc(usuario.email).collection('vacantes').doc(id).get()
+      .then(doc => {
+        console.log(doc.data());
+        console.log(doc.id);
+        let vacante = doc.data();
+        vacante.id = doc.id
+        commit('setVacante', vacante)
+      })
+    },
+
+    async getUrlFile({commit}, mail){
+      
+          try{
+           const usuario =firebase.auth().currentUser;
+           console.log(usuario.email)
+           const fileurls= await firebase.storage().ref().child(mail).child('HojaDeVidaPdf');
+           fileurls.getDownloadURL().then(url=>{
+            console.log("La url es:", url);
+           }).catch(err=>{
+             console.log("No se encontró archivo", err)
+           })
+           //this.downloadUrl=loadUrl;
+           commit("setFileHv", loadUrl)
+           
+           
+       }catch(err){
+           console.log("No se pudo obtener la url",err);
+            
+       }
+      
+       
+   },
+   agregarVacante({commit}, vacante){
+    const usuario =firebase.auth().currentUser;
+    const docRef= db.collection("company").doc(usuario.email);
+
+    console.log(vacante)
+    docRef.collection("vacantes").add({
+      cargo: vacante.cargo,
+      educacion: vacante.educacion,
+      salario: vacante.salario,
+      horario: vacante.horario,
+      descripcion: vacante.descripcion
+    }).catch(err=>{
+      console.log("No se ha podido adicionar vacante: ", err)
+    })
+    
+   },
+
+   eliminarVacante({commit}, id){
+    const usuario =firebase.auth().currentUser;
+    const docRef= db.collection("company").doc(usuario.email).collection("vacantes");
+
+    docRef.doc(id).delete().then(()=>{console.log("La vacante fue eliminada")
+  commit("eliminarVacante", id)
+  })
+   },
+
+   editarVacante({commit}, vacante){
+    const usuario =firebase.auth().currentUser;
+    db.collection('company').doc(usuario.email).collection('vacantes').doc(vacante.id).update({
+      cargo: vacante.cargo,
+      educacion: vacante.educacion,
+      salario: vacante.salario,
+      horario: vacante.horario,
+      descripcion: vacante.descripcion
+    })
+    .then(()=>{
+      router.push({name: 'perfilEmpresa'})
+    })
+   }
   },
 
   

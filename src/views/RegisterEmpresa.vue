@@ -78,7 +78,7 @@
               </b-form-group>
               
              
-              <b-button type="submit" variant="info" >Actualizar informaión de empresa</b-button>
+              <b-button type="submit" variant="info" >Actualizar información de empresa</b-button>
             </b-form>
             
 

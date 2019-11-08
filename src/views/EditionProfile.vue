@@ -87,7 +87,7 @@
               </b-form-group>
 
               <b-button type="submit" variant="info">
-                <a v-link="{nombre:'perfilUsuario'}">Guardar cambios</a>
+                Guardar cambios
               </b-button>
             </b-form>
           </div>

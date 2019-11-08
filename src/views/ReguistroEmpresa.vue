@@ -1,7 +1,12 @@
 <template>
   <div>
-    <b-form @submit.prevent="crearEmpresa({email:email, pass:pass1})">
-      <h1>Registro de empresas</h1>
+
+
+   <b-container class="mt-5">
+    <b-row>
+    <b-col>
+       <b-form @submit.prevent="crearEmpresa({email:email, pass:pass1})">
+      <h3>Registro de empresas</h3>
 
 
 
@@ -44,6 +49,12 @@
      
     </b-form>
     <p>{{error}}</p>
+    </b-col>
+    <b-col></b-col>
+    
+  </b-row>
+   </b-container>
+   
   </div>
 </template>
 

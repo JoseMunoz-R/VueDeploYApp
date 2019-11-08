@@ -47,6 +47,7 @@
 <script>
 import firebase from "firebase";
 import 'firebase/storage';
+import db from "@/main";
 import { mapState } from 'vuex';
 import pdf from 'vue-pdf';
 export default {
@@ -105,6 +106,11 @@ export default {
             } catch(err){
                 console.log(err);
             }
+             
+             const usuario = firebase.auth().currentUser;
+             const docRef= await db.collection("users").doc(usuario.email);
+             docRef.update({urlfile: this.downloadUrl})
+
             this.loading = false
         },
 
