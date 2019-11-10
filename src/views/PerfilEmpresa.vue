@@ -31,7 +31,7 @@
   <b-tabs content-class="mt-3">
     <b-tab title="Candidatos" active><h4>Candidatos</h4><Card></Card></b-tab>
     <b-tab title="Vacantes"> <CrearVacante></CrearVacante></b-tab>
-    <b-tab title="Disabled" disabled><p>Postulantes</p></b-tab>
+    <b-tab title="Postulantes"><p>Postulantes</p></b-tab>
   </b-tabs>
 </div>
 

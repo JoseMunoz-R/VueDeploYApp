@@ -19,7 +19,10 @@ export default new Vuex.Store({
     candidatos: [],
     urlHv:'',
     vacante: { cargo: '', educacion: '', salario: '', horario: '', descripcion: ''},
-    vacantes: []
+    vacantes: [],
+    empresas: [],
+    info:'',
+    vacantePostulante: { cargo: '', educacion: '', salario: '', horario: '', descripcion: '', postulantes: []},
   },
   mutations: {
     setUsuario(state, payload) {
@@ -58,6 +61,16 @@ export default new Vuex.Store({
     },
     setVacantes(state, currentVacant){
       state.vacantes= currentVacant;
+    },
+
+    setListaEmpresas(state, ListaEmpresas){
+      state.empresas=ListaEmpresas
+    },
+    setInfo(state, msg){
+      state.info=msg
+    },
+    setVacantePostulante(state, vacante){
+      state.vacantePostulante=vacante
     }
   },
   actions: {
@@ -336,11 +349,12 @@ export default new Vuex.Store({
       educacion: vacante.educacion,
       salario: vacante.salario,
       horario: vacante.horario,
-      descripcion: vacante.descripcion
+      descripcion: vacante.descripcion,
+      postulantes: []
     }).catch(err=>{
       console.log("No se ha podido adicionar vacante: ", err)
     })
-    
+
    },
 
    eliminarVacante({commit}, id){
@@ -364,7 +378,107 @@ export default new Vuex.Store({
     .then(()=>{
       router.push({name: 'perfilEmpresa'})
     })
-   }
+   },
+
+   getEmpresas({commit}){
+     const empresas=[];
+    const docRef= db.collection("company");
+    docRef.get()
+    .then(snapshot=>{
+      snapshot.forEach(doc=>{
+        console.log(doc.data())
+        let empresa=doc.data();
+        empresa.id=doc.id;
+        empresas.push(empresa)
+      }).catch(err=>{
+        console.log("Error getting documents ", err)
+      })
+      
+    })
+    commit("setListaEmpresas", empresas)
+   },
+
+   getInfoEmpresa({commit}, id){
+    db.collection('company').doc(id).get()
+    .then(doc => {
+      console.log(doc.data());
+      console.log(doc.id);
+      let empresa = doc.data();
+      empresa.id = doc.id
+      commit('setProfileEmpresa', empresa)
+    })
+  },
+
+  getInfoVacantes({commit}, id){
+    const vacantesEnSet= [];
+    
+    //console.log(usuario.email)
+    const docRef= db.collection("company").doc(id).collection("vacantes");
+
+    docRef.get().then(snapshot=>{
+      snapshot.forEach(doc=>{
+        console.log(doc.data())
+        let profile=doc.data();
+        profile.id=doc.id;
+        vacantesEnSet.push(profile);
+      })
+    }).catch(err=>{
+      console.log(err)
+    })
+    commit("setVacantes", vacantesEnSet);
+  },
+
+  postularCandidato( {commit}, payload ){
+    const msg='postulación agregada Correctamente'
+    const usuario =firebase.auth().currentUser;
+    const docRef= db.collection("company").doc(payload.emailem).collection("vacantes").doc(payload.idvacante);
+    const userAdd= {email: usuario.email};
+
+    docRef.update({
+      postulantes: firebase.firestore.FieldValue.arrayUnion(userAdd)
+
+    }).then(()=>{
+      console.log("postulación agregada Correctamente")
+      commit("setInfo", msg)
+    }).catch(err=>{
+      console.log("no se pudo guardar al postulante", err)
+    })
+  },
+  declinarPostulacion( {commit}, payload ){
+    const msg='postulación declinada Correctamente'
+    const usuario =firebase.auth().currentUser;
+    const docRef= db.collection("company").doc(payload.emailem).collection("vacantes").doc(payload.idvacante);
+    const userRemove= {email: usuario.email};
+
+    docRef.update({
+      postulantes: firebase.firestore.FieldValue.arrayRemove(userRemove)
+
+    }).then(()=>{
+      console.log("postulación declinada Correctamente")
+      commit("setInfo", msg)
+    }).catch(err=>{
+      console.log("no se pudo declinar al postulante", err)
+    })
+  },
+
+  getPostulantes({commit}, payload){
+    const usuario =firebase.auth().currentUser;
+    const docRef= db.collection("company").doc(payload.emailem).collection("vacantes").doc(payload.idvacante);
+
+    docRef.get().then(doc =>{
+      if (!doc.exists) {
+        console.log('No such document!');
+      } else {
+        console.log('Document data:', doc.data());
+        let vacante = doc.data();
+        vacante.id = doc.id
+        commit("setVacantePostulante", vacante)
+      }
+      
+    }).catch(err=>{
+      console.log('Error getting documents', err);
+    })
+  }
   },
 
   

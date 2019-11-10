@@ -74,7 +74,15 @@ const routes = [
     name: 'agregar',
     
     component: () => import(/* webpackChunkName: "about" */ '../views/OfertasEmpresa/Agregar.vue')
-  }
+  },
+
+  {
+    path: '/infoEmpresa/:id',
+    name: 'infoEmpresa',
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/InfoEmpresa.vue')
+  },
+  
   
   
   

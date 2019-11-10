@@ -16,14 +16,20 @@
         Nivel de Inglés: {{perfilusuario[0].ingles}} <br>
 
           <div>
-          <b-button :to="{name:'editionProfile'}">Edita tu perfil</b-button>
+          <b-button size="sm" variant="info" :to="{name:'editionProfile'}">Edita tu perfil</b-button>
           </div>
               
-            <UpFile></UpFile>
+            
         </b-card-text>
       </b-card>
     </b-card-group>
   </div>
+
+    <b-tabs content-class="mt-3">
+    <b-tab title="Hoja de Vida" active><h4>Hoja de Vida</h4> <UpFile></UpFile></b-tab>
+    <b-tab title="Ver Empresas"><ListaEmpresa></ListaEmpresa></b-tab>
+    
+  </b-tabs>
     </div>
 </template>
 
@@ -31,6 +37,7 @@
 <script>
 import {mapState, mapActions} from 'vuex'
 import UpFile from '@/components/UpFile'
+import ListaEmpresa from '@/components/ListaEmpresa'
 export default {
     name: 'perfilUsuario',
     data() {
@@ -49,6 +56,7 @@ export default {
     },
     components: {
       UpFile,
+      ListaEmpresa
     }
 }
 </script>
