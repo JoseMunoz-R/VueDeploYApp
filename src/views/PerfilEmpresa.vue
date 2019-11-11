@@ -31,7 +31,7 @@
   <b-tabs content-class="mt-3">
     <b-tab title="Candidatos" active><h4>Candidatos</h4><Card></Card></b-tab>
     <b-tab title="Vacantes"> <CrearVacante></CrearVacante></b-tab>
-    <b-tab title="Postulantes"><p>Postulantes</p></b-tab>
+    <b-tab title="Postulantes"><PostulantesFromEmpresa></PostulantesFromEmpresa></b-tab>
   </b-tabs>
 </div>
 
@@ -44,6 +44,7 @@
 import {mapState, mapActions} from 'vuex'
 import Card from '@/components/Card'
 import CrearVacante from '@/components/CrearVacante'
+import PostulantesFromEmpresa from '@/components/PostulantesFromEmpresa'
 export default {
     
     name: 'perfilEmpresa',
@@ -55,6 +56,7 @@ export default {
     components: {
         Card,
         CrearVacante,
+        PostulantesFromEmpresa
     },
     methods: {
         ...mapActions(['getProfileEmpresa', 'getVacantes'])
@@ -65,6 +67,9 @@ export default {
     created() {
         this.getProfileEmpresa(),
         this.getVacantes()
+    },
+    mounted() {
+        this.$forceUpdate();
     },
 }
 </script>

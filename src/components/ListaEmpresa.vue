@@ -2,9 +2,12 @@
     <div>
         <h4>Lista de Empresas</h4>
         
+        <b-form @submit.prevent="buscador(textoBuscar)">
+  <b-input type="text" placeholder="Buscar empresa..." v-model="textoBuscar" class="mt-3 mb-3" v-on:keyup="buscador(textoBuscar)" ></b-input>
+</b-form>
 
         <ul class="list-group mt-2">
-      <li class="list-group-item" v-for="item of empresas" :key="item.id">
+      <li class="list-group-item" v-for="item of arrayFiltradoEmpresa" :key="item.id">
         {{item.nombre}} 
         <div class="float-right">
          <router-link
@@ -22,14 +25,20 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
+import {mapActions, mapState, mapGetters} from 'vuex'
 export default {
     name: "listaEmpresas",
+    data() {
+        return {
+            textoBuscar: ''
+        }
+    },
     methods: {
-        ...mapActions(['getEmpresas'])
+        ...mapActions(['getEmpresas', 'buscador'])
     },
     computed: {
-       ...mapState(['empresas'])
+       ...mapState(['empresas']),
+       ...mapGetters(['arrayFiltradoEmpresa'])
     },
     created() {
          this.getEmpresas()

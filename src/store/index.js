@@ -23,6 +23,8 @@ export default new Vuex.Store({
     empresas: [],
     info:'',
     vacantePostulante: { cargo: '', educacion: '', salario: '', horario: '', descripcion: '', postulantes: []},
+    vacantesPostulantes: [],
+    textoBuscar: ''
   },
   mutations: {
     setUsuario(state, payload) {
@@ -71,6 +73,9 @@ export default new Vuex.Store({
     },
     setVacantePostulante(state, vacante){
       state.vacantePostulante=vacante
+    },
+    setVacantesPostulantes(state, vacantesPostulante){
+      state.vacantesPostulantes= vacantesPostulante
     }
   },
   actions: {
@@ -339,7 +344,7 @@ export default new Vuex.Store({
       
        
    },
-   agregarVacante({commit}, vacante){
+   agregarVacante({commit, dispatch}, vacante){
     const usuario =firebase.auth().currentUser;
     const docRef= db.collection("company").doc(usuario.email);
 
@@ -351,6 +356,8 @@ export default new Vuex.Store({
       horario: vacante.horario,
       descripcion: vacante.descripcion,
       postulantes: []
+    }).then(()=>{
+      dispatch('getVacantes')
     }).catch(err=>{
       console.log("No se ha podido adicionar vacante: ", err)
     })
@@ -478,6 +485,45 @@ export default new Vuex.Store({
     }).catch(err=>{
       console.log('Error getting documents', err);
     })
+  },
+
+  getPostulantesFromEmpresa({commit}){
+    const vacantes= [];
+    const usuario =firebase.auth().currentUser;
+    const docRef= db.collection("company").doc(usuario.email).collection("vacantes");
+ 
+    docRef.get().then(snapshot=>{
+      snapshot.forEach(doc=>{
+        console.log(doc.id, '=>', doc.data());
+        let vacante=doc.data();
+        vacante.id=doc.id;
+        if(vacante.postulantes.length > 0){
+          vacantes.push(vacante)
+        }
+        
+      })
+    }).catch(err=>{
+      console.log('Error getting documents', err);
+    })
+    commit("setVacantesPostulantes", vacantes)
+  },
+  getPerfilcandidatoFromEmpresa({commit}, emailCandidato){
+    const docRef= db.collection("users").doc(emailCandidato);
+
+    docRef.get().then(doc=>{
+      console.log("Info candidato: ", doc.data())
+      let perfil= doc.data();
+      perfil.id= doc.id;
+      commit("setProfile", perfil)
+    }).catch(err=>{
+      console.log(err)
+    })
+    
+  },
+
+  buscador({commit, state}, payload){
+    console.log(payload);
+    state.textoBuscar=payload;
   }
   },
 
@@ -505,6 +551,27 @@ export default new Vuex.Store({
       } else {
         return true;
       }
+    },
+    arrayFiltrado(state){
+      let arrayFiltrado=[];
+      for(let candidato of state.candidatos){
+        let nombre = candidato.nombre;
+        if(nombre.indexOf(state.textoBuscar) >= 0){
+          arrayFiltrado.push(candidato)
+        }
+      }
+      return arrayFiltrado;
+    },
+    arrayFiltradoEmpresa(state){
+      let arrayFiltrado=[];
+      for(let empresa of state.empresas){
+        let nombre = empresa.nombre;
+        if(nombre.indexOf(state.textoBuscar) >= 0){
+          arrayFiltrado.push(empresa)
+        }
+      }
+      return arrayFiltrado;
     }
+
   }
 });

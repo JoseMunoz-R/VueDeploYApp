@@ -1,6 +1,7 @@
 <template>
     <div>
-              <h4 v-if="vacantes.length>0">Lista de Vacantes</h4>
+  
+              <h4 v-if="vacantes.length>0" class="mt-2">Lista de Vacantes</h4>
     <ul class="list-group mt-2">
       <li class="list-group-item" v-for="item of vacantes" :key="item.id">
         {{item.cargo}} - {{item.nombre}}
@@ -33,6 +34,9 @@ export default {
     },
     computed: {
       ...mapState(['vacantes'])
+    },
+    created() {
+      this.getVacantes()
     },
 }
 </script>

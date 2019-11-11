@@ -27,7 +27,7 @@
     <h4 v-if="vacantes.length==0">Actualmente no hay vacantes creadas por {{perfilEmpresa.nombre}}</h4>
 
     <div>
-    <b-card-group deck>
+    <b-card-group columns>
    
   <b-card
     header="Vacante"

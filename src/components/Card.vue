@@ -1,14 +1,18 @@
 <template>
 <div>
 
-<b-card-group deck>
+<b-form @submit.prevent="buscador(textoBuscar)">
+  <b-input type="text" placeholder="Buscar candidato..." v-model="textoBuscar" class="mt-3 mb-3" v-on:keyup="buscador(textoBuscar)" ></b-input>
+</b-form>
+
+<b-card-group columns>
 <b-card
       header="Candidato"
       header-tag="header"
       header-text-variant="white"
       header-bg-variant="dark"
       
-      v-for="(item, index) of candidatos" :key="index"
+      v-for="(item, index) of arrayFiltrado" :key="index"
     >
        <b-card-title>{{item.nombre}} {{item.apellidos}}</b-card-title>
        <b-card-sub-title class="mb-2">Correo: {{item.profileemail}}</b-card-sub-title>
@@ -29,19 +33,21 @@
       
       <script>
 
-import {mapState, mapActions} from 'vuex'
+import {mapState, mapActions, mapGetters} from 'vuex'
       export default {
         name: 'card',
         data() {
           return {
            // candidatos: []
+           textoBuscar: ''
           }
         },
         computed: {
-          ...mapState(['usuario', 'candidatos'])
+          ...mapState(['usuario', 'candidatos']),
+          ...mapGetters(['arrayFiltrado'])
         },
         methods: {
-          ...mapActions(['getCandidatos']),
+          ...mapActions(['getCandidatos', 'buscador']),
           
         },
         created() {

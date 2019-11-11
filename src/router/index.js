@@ -82,6 +82,13 @@ const routes = [
     
     component: () => import(/* webpackChunkName: "about" */ '../views/InfoEmpresa.vue')
   },
+
+  {
+    path: '/verPerfilCandidato/:email',
+    name: 'verPerfilCandidato',
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/VerPerfilCandidato.vue')
+  },
   
   
   

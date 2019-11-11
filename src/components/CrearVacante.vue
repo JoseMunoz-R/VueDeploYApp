@@ -6,7 +6,7 @@
             <b-row>
             <b-col>
             <h4>Crear vacantes</h4>
-                 <b-form @submit.prevent="agregarVacante(vacante)">
+                 <b-form @submit.prevent="agregarVacante(vacante)" @reset="limpiarCampos">
       <b-form-group
         id="input-group-1"
         label="Cargo"
@@ -58,7 +58,8 @@
       </b-form-group>
 
 
-      <b-button type="submit" variant="info">Agregar</b-button>
+      <b-button type="submit" variant="info" class="mr-2">Agregar</b-button>
+      <b-button type="reset" variant="info">Limpiar</b-button>
       
     </b-form>
             </b-col>
@@ -90,7 +91,15 @@ export default {
         ...mapState(['vacantes'])
     },
     methods: {
-        ...mapActions(['agregarVacante','eliminarVacante', 'getVacantes'])
+        ...mapActions(['agregarVacante','eliminarVacante', 'getVacantes']),
+        limpiarCampos(evt){
+            evt.preventDefault();
+            this.cargo= '', 
+            this.educacion= '', 
+            this.salario= '', 
+            this.horario= '', 
+            this.descripcion= ''
+        }
     },
     components:{
         ListaVacante
