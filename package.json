@@ -12,7 +12,7 @@
     "bootstrap-vue": "^2.0.4",
     "core-js": "^3.1.2",
     "firebase": "^7.2.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "popper.js": "^1.16.0",
     "vue": "^2.6.10",
     "vue-pdf": "^4.0.7",
