@@ -37,7 +37,7 @@ export default {
         ...mapActions(['getEmpresas', 'buscador'])
     },
     computed: {
-       ...mapState(['empresas']),
+       ...mapState(['empresas', 'usuario']),
        ...mapGetters(['arrayFiltradoEmpresa'])
     },
     created() {

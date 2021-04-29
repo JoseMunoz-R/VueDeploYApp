@@ -24,7 +24,9 @@ export default new Vuex.Store({
     info:'',
     vacantePostulante: { cargo: '', educacion: '', salario: '', horario: '', descripcion: '', postulantes: []},
     vacantesPostulantes: [],
-    textoBuscar: ''
+    textoBuscar: '',
+    postulantesAVacante: [],
+    vnte: [],
   },
   mutations: {
     setUsuario(state, payload) {
@@ -76,6 +78,12 @@ export default new Vuex.Store({
     },
     setVacantesPostulantes(state, vacantesPostulante){
       state.vacantesPostulantes= vacantesPostulante
+    },
+    setPostulantesVacante(state, postulantesAVacante){
+      state.postulantesAVacante= postulantesAVacante
+    },
+    setVnte(state, vacante){
+      state.vnte=vacante
     }
   },
   actions: {
@@ -357,10 +365,12 @@ export default new Vuex.Store({
       descripcion: vacante.descripcion,
       postulantes: []
     }).then(()=>{
-      dispatch('getVacantes')
+      dispatch('getVacantes');
+      
     }).catch(err=>{
       console.log("No se ha podido adicionar vacante: ", err)
     })
+    
 
    },
 
@@ -435,7 +445,7 @@ export default new Vuex.Store({
     commit("setVacantes", vacantesEnSet);
   },
 
-  postularCandidato( {commit}, payload ){
+  postularCandidato( {commit, dispatch}, payload ){
     const msg='postulación agregada Correctamente'
     const usuario =firebase.auth().currentUser;
     const docRef= db.collection("company").doc(payload.emailem).collection("vacantes").doc(payload.idvacante);
@@ -447,6 +457,7 @@ export default new Vuex.Store({
     }).then(()=>{
       console.log("postulación agregada Correctamente")
       commit("setInfo", msg)
+      dispatch('getInfoVacantes')
     }).catch(err=>{
       console.log("no se pudo guardar al postulante", err)
     })
@@ -468,23 +479,51 @@ export default new Vuex.Store({
     })
   },
 
-  getPostulantes({commit}, payload){
+  getPostulantes({commit}, emailEmpresa){
+    const vacantes= [];
     const usuario =firebase.auth().currentUser;
+    const docRef= db.collection("company").doc(emailEmpresa).collection("vacantes");
+
+    docRef.get().then(snapshot =>{
+      snapshot.forEach(doc=>{
+        //console.log(doc.id, 'jose=>', doc.data())
+        let vacante=doc.data();
+        vacante.id=doc.id;
+        const resultado= vacante.postulantes.find(postu=>postu.email === usuario.email)
+        //console.log(resultado)
+        //console.log(vacante.postulantes)
+        if(vacante.postulantes.find(postu=>postu.email === usuario.email)){
+          vacantes.push(vacante)
+          console.log(vacantes.id, 'jose=>', vacantes)
+        }
+      })
+      
+    }).catch(err=>{
+      console.log('Error getting documents', err);
+    })
+    commit("setPostulantesVacante", vacantes)
+  },
+
+  getPrueba({commit}, payload){
+    const usuario =firebase.auth().currentUser;
+    const vcntPrueba={};
     const docRef= db.collection("company").doc(payload.emailem).collection("vacantes").doc(payload.idvacante);
 
-    docRef.get().then(doc =>{
+    docRef.get().then(doc=>{
       if (!doc.exists) {
         console.log('No such document!');
       } else {
         console.log('Document data:', doc.data());
         let vacante = doc.data();
         vacante.id = doc.id
-        commit("setVacantePostulante", vacante)
+        if(vacante.postulantes.find(postu=>postu.email === usuario.email)){
+          console.log("si existe")
+          
+          commit("setVnte", vacante)
+        }
       }
-      
-    }).catch(err=>{
-      console.log('Error getting documents', err);
     })
+    
   },
 
   getPostulantesFromEmpresa({commit}){

@@ -92,8 +92,8 @@ export default {
     },
     methods: {
         ...mapActions(['agregarVacante','eliminarVacante', 'getVacantes']),
-        limpiarCampos(evt){
-            evt.preventDefault();
+        limpiarCampos(){
+           
             this.cargo= '', 
             this.educacion= '', 
             this.salario= '', 
